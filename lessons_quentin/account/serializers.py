@@ -2,10 +2,12 @@
 from __future__ import unicode_literals
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from account.models import Account, Student
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Student
         fields = ('first_name', 'last_name', 'email', 'birthdate')
@@ -13,11 +15,19 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
 
-    students = StudentSerializer(many=True)
+    password = serializers.CharField(write_only=True)
+    students = StudentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Account
-        fields = ('name', 'email', 'address', 'students')
+        fields = ('name', 'email', 'address', 'password', 'students')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Account.objects.all(),
+                fields=('name', 'password'),
+                message='An account with these name and password already exists!'
+            )
+        ]
 
         def create(self, validated_data):
             students_data = validated_data.pop('students')

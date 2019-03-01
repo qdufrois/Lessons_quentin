@@ -15,7 +15,11 @@ class Account(models.Model):
 
     class Meta:
         verbose_name = "account"
-
+        unique_together = ("name", "password")
+    
+    def __str__(self):
+        return self.name
+    
 
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
@@ -27,3 +31,11 @@ class Student(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     account = models.ForeignKey(Account, related_name='students', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "student"
+    
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+    
+
