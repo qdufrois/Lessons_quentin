@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView, CreateAPIView 
+from rest_framework.generics import ListAPIView, CreateAPIView
+ 
 from account.models import Account, Student
 from account.serializers import AccountSerializer
 
