@@ -6,21 +6,24 @@ from django.db import models
 
 class Account(models.Model):
     account_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=False)
-    email = models.EmailField()
-    password = models.CharField(max_length=255, null=False)
-    address = models.CharField(max_length=255) 
+    name = models.CharField(max_length=255)
+    email = models.EmailField(null=True)
+    password = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, null=True) 
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "account"
 
 
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=100, null=False)
-    last_name = models.CharField(max_length=100, null=False)
-    birthdate = models.DateField()
-    email = models.EmailField()
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    birthdate = models.DateField(null=True)
+    email = models.EmailField(null=True)
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, related_name='students', on_delete=models.CASCADE)

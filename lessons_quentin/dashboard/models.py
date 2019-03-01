@@ -7,7 +7,7 @@ from account.models import Account, Student
 
 class Status(models.Model):
     status_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, null=False)
+    name = models.CharField(max_length=50)
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
@@ -23,8 +23,8 @@ class Subscription(models.Model):
 
 class Lesson(models.Model):
     lesson_id = models.AutoField(primary_key=True)
-    date = models.DateTimeField()
-    description = models.TextField(null=False)
+    date = models.DateTimeField(null=True)
+    description = models.TextField()
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
