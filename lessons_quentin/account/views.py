@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
  
 from account.models import Account, Student
 from account.serializers import AccountSerializer
@@ -19,3 +19,4 @@ class ListAccountView(ListAPIView):
         else:
             queryset = Account.objects.all()
         return queryset
+

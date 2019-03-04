@@ -34,6 +34,7 @@ class Student(models.Model):
 
     class Meta:
         verbose_name = "student"
+        unique_together = ("account", "first_name", "last_name")
     
     def __str__(self):
         return self.first_name + " " + self.last_name

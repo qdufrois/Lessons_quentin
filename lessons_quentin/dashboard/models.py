@@ -11,6 +11,12 @@ class Status(models.Model):
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "name"
+    
+    def __str__(self):
+        return self.name
+
 
 class Subscription(models.Model):
     subscription_id = models.AutoField(primary_key=True)
