@@ -7,10 +7,17 @@ from account.models import Account, Student
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Student
-        fields = ('first_name', 'last_name', 'email', 'birthdate')
+        fields = ('first_name', 'last_name', 'email', 'birthdate', 'account')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Student.objects.all(),
+                fields=("account", "first_name", "last_name"),
+                message='This student already exist'
+            )
+        ]
     
 
 class AccountSerializer(serializers.ModelSerializer):
