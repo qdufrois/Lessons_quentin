@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 import json
-from pprint import pprint
 from django.test import TestCase, Client
 from django.urls import reverse
+
 from account.models import Account, Student
 
 

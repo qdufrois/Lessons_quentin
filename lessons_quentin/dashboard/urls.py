@@ -9,7 +9,6 @@ from dashboard import views
 app_name = 'dashboard'
 
 urlpatterns = [
-        url(r'^create_sub', CreateAPIView.as_view(queryset=Subscription.objects.all(), serializer_class=SubSerializer), name='post_sub'),
-        url(r'^update_status', views.UpdateStatusSubView.as_view(), name='update_status')
-
+        url(r'^create_sub$', CreateAPIView.as_view(queryset=Subscription.objects.all(), serializer_class=SubSerializer), name='post_sub'),
+        url(r'^update_status$', views.UpdateStatusSubView.as_view(), name='update_status')
 ]
