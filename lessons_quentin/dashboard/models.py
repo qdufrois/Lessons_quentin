@@ -35,7 +35,7 @@ class Lesson(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     subscription_id = models.ForeignKey(Subscription, on_delete=models.SET_NULL, related_name='lessons', null=True)
-    student = models.ManyToManyField(Student)
+    student_id = models.ManyToManyField(Student)
     
 
 
