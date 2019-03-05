@@ -6,7 +6,7 @@ Python 2.7 - Django 1.11 project - Quentin Dufrois
 
 ### Copy the unzipped folder in the desired directory
 
-### Start the virtualenv and launch the server
+### Start the virtualenv, set the database and launch the server
 In the terminal:
 
 * Go to the project directory
