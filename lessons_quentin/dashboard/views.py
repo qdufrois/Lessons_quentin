@@ -12,7 +12,6 @@ from dashboard.models import Subscription, Status
 from dashboard.serializers import SubStatusSerializer, SubSerializer
 
 
-
 class UpdateStatusSubView(APIView):
 
     def get(self, request, format=None):
@@ -20,21 +19,17 @@ class UpdateStatusSubView(APIView):
         serializer = SubStatusSerializer(subs, many=True)
         return Response(serializer.data)
 
-
     def post(self, request, format=None):
         try:          
-            subscription = Subscription.objects.get(pk=request.data['subscription_id'])
-            serializer = SubStatusSerializer(data=request.data)  
-            print(request.data)
+            subscription = Subscription.objects.get(subscription_id=request.data['subscription_id'])
+            serializer = SubStatusSerializer(data=request.data)            
                               
-            if serializer.is_valid(): 
-                # Find out why the subscription_id has vanished in serializer.data
-                # print(serializer.data)             
-                subscription.status = Status.objects.get(name=serializer.data['status'])
+            if serializer.is_valid():                           
+                subscription.status = Status.objects.get(pk=serializer.data['status'])
                 subscription.save()
                 return Response('Status modified', status=status.HTTP_201_CREATED)
 
         except ObjectDoesNotExist:       
-            return Response('This subscription do not exist', status=status.HTTP_400_BAD_REQUEST)
+            return Response('This subscription does not exist', status=status.HTTP_400_BAD_REQUEST)
 
 #{"subscription_id":1, "status":1}

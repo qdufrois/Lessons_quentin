@@ -10,19 +10,19 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ('first_name', 'last_name', 'email', 'birthdate', 'account')
+        fields = ('account_id', 'first_name', 'last_name', 'email', 'birthdate', )
         validators = [
             UniqueTogetherValidator(
                 queryset=Student.objects.all(),
-                fields=("account", "first_name", "last_name"),
+                fields=("account_id", "first_name", "last_name"),
                 message='This student already exist'
             )
         ]
+        extra_kwargs = {'account_id': {'write_only': True}}
     
 
 class AccountSerializer(serializers.ModelSerializer):
-
-    password = serializers.CharField(write_only=True)
+    
     students = StudentSerializer(many=True, read_only=True)
 
     class Meta:
@@ -35,10 +35,4 @@ class AccountSerializer(serializers.ModelSerializer):
                 message='An account with these name and password already exists!'
             )
         ]
-
-        def create(self, validated_data):
-            students_data = validated_data.pop('students')
-            account = Account.objects.create(**validated_data)
-            for student_data in students_data:
-                Account.objects.create(account=account, **student_data)
-            return account
+        extra_kwargs = {'password': {'write_only': True}}

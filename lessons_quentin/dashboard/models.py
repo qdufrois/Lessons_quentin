@@ -29,12 +29,13 @@ class Subscription(models.Model):
 
 class Lesson(models.Model):
     lesson_id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(null=True)
+    date = models.DateField(null=True)
     description = models.TextField()
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    subscription_id = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True)
+    subscription_id = models.ForeignKey(Subscription, on_delete=models.SET_NULL, related_name='lessons', null=True)
+    student = models.ManyToManyField(Student)
     
 
 
