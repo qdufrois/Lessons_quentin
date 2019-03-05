@@ -26,14 +26,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-* All the data will come from the POST requests, except for the Status models instances, that you should add as follow in the python shell (feel free to adapt the names to your needs)
+* All the data will come from the POST requests, except for the Status model instances, that you should add as follow in the python shell (feel free to adapt the names to your needs)
 ```
 python manage.py shell
->>>from dashboard.models import Status
->>>Status.object.create(name='ACTIVE')
->>>Status.object.create(name='CANCELLED')
->>>Status.object.create(name='PAUSED')
->>>quit()
+>>> from dashboard.models import Status
+>>> Status.objects.create(name='ACTIVE')
+>>> Status.objects.create(name='CANCELLED')
+>>> Status.objects.create(name='PAUSED')
+>>> quit()
 ```
 
 * Then run the django server
