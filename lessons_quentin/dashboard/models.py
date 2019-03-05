@@ -23,8 +23,8 @@ class Subscription(models.Model):
     subscription_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
+    account_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='subscription')
+    status = models.ForeignKey(Status, on_delete=models.SET_NULL, related_name='subscription', null=True)
 
 
 class Lesson(models.Model):

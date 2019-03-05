@@ -11,11 +11,12 @@ class SubSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Subscription
-        fields = ('account',)
+        fields = ('account_id',)
+
 
 class SubStatusSerializer(serializers.ModelSerializer):
 
     class Meta:
 
         model = Subscription
-        fields = ('account', 'status',)
+        fields = ('subscription_id', 'status',)
