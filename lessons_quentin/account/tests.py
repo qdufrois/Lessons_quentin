@@ -12,11 +12,10 @@ class TestAccountViews(TestCase):
 
     def setUp(self):
         self.client = Client()
-        Account.objects.create(name='Test_Get', email='testget@gmail.com', password='Maman246', address='25 rue de la Corniche')
+        Account.objects.create(account_id=1, name='Test_Get', email='testget@gmail.com', password='Maman246', address='25 rue de la Corniche')
         self.data_account = {'name': 'Test_Post', 'email': 'testpost@gmail.com', 'password': 'Maman246', 'address': '25 rue de la Corniche'}
-        self.data_student = {'first_name': 'Test', 'last_name': 'Student', 'birthdate': '1970-01-01', 'email': 'teststudent@gmail.com', 'account': 1}
+        self.data_student = {'account_id': 1, 'first_name': 'Test', 'last_name': 'Student', 'birthdate': '1970-01-01', 'email': 'teststudent@gmail.com', }
         
-
     def test_account_POST(self):
         response_1 = self.client.post(reverse('account:post_account'), data=self.data_account, json=json.dumps(self.data_account))
         self.assertEquals(response_1.status_code, 201)
@@ -34,14 +33,12 @@ class TestAccountViews(TestCase):
         self.assertEquals(content[0]['name'], 'Test_Get')
         # Checking the password is not displayed
         with self.assertRaises(KeyError):
-            pwd = content[0]['password']
-    
-    # Does not work but I have no clue why
-    # def test_student_POST(self):
-    #     response = self.client.post(reverse('account:post_student'), data=self.data_student, json=json.dumps(self.data_student))
-    #     self.assertEquals(response.status_code, 201)    
-    #     print(response.json()) 
-    #     self.assertEquals(Student.objects.get(pk=1).first_name, 'Test')
+            pwd = content[0]['password']    
+
+    def test_student_POST(self):
+        response = self.client.post(reverse('account:post_student'), data=self.data_student, json=json.dumps(self.data_student))
+        self.assertEquals(response.status_code, 201)    
+        self.assertEquals(Student.objects.get(student_id=1).first_name, 'Test')
 
 
 
