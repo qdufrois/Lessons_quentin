@@ -20,10 +20,27 @@ cd path/to/env
 source env/bin/activate
 ```
 
+* You have to create a MySQL-type database and connect it to the application (via the file settings.py), then apply the migrations
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+* All the data will come from the POST requests, except for the Status models instances, that you should add as follow in the python shell (feel free to adapt the names to your needs)
+```
+python manage.py shell
+>>>from dashboard.models import Status
+>>>Status.object.create(name='ACTIVE')
+>>>Status.object.create(name='CANCELLED')
+>>>Status.object.create(name='PAUSED')
+>>>quit()
+```
+
 * Then run the django server
 ```
 python manage.py runserver
 ```
+
 
 ## The Application
 
