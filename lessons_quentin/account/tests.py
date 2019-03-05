@@ -14,7 +14,7 @@ class TestAccountViews(TestCase):
         self.client = Client()
         Account.objects.create(account_id=1, name='Test_Get', email='testget@gmail.com', password='Maman246', address='25 rue de la Corniche')
         self.data_account = {'name': 'Test_Post', 'email': 'testpost@gmail.com', 'password': 'Maman246', 'address': '25 rue de la Corniche'}
-        self.data_student = {'account_id': 1, 'first_name': 'Test', 'last_name': 'Student', 'birthdate': '1970-01-01', 'email': 'teststudent@gmail.com', }
+        self.data_student = {'account_id': 1, 'first_name': 'Test2', 'last_name': 'Student', 'birthdate': '1970-01-01', 'email': 'teststudent@gmail.com', }
         
     def test_account_POST(self):
         response_1 = self.client.post(reverse('account:post_account'), data=self.data_account, json=json.dumps(self.data_account))
@@ -38,7 +38,7 @@ class TestAccountViews(TestCase):
     def test_student_POST(self):
         response = self.client.post(reverse('account:post_student'), data=self.data_student, json=json.dumps(self.data_student))
         self.assertEquals(response.status_code, 201)    
-        self.assertEquals(Student.objects.get(student_id=1).first_name, 'Test')
+        self.assertEquals(Student.objects.get(student_id=2).first_name, 'Test2') # id = 2 because another student is created in account.tests
 
 
 
