@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from dashboard.models import Subscription, Lesson, Status
+from account.models import Student
 from account.serializers import StudentSerializer
 
 
@@ -16,8 +17,6 @@ class SubSerializer(serializers.ModelSerializer):
 
 
 class SubStatusSerializer(serializers.ModelSerializer):
-
-    subscription_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscription.objects.all())
 
     class Meta:
 
@@ -54,12 +53,17 @@ class SubLessonSerializer(serializers.ModelSerializer):
 class EnrolStudent(serializers.ModelSerializer):
 
     lesson_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Lesson.objects.all())
-    student_id = serializers.IntegerField()
+    student_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Student.objects.all())
 
     class Meta:
         model = Lesson
         fields = ('lesson_id', 'student_id')   
 
+    def save(self):
+        lesson = self.validated_data['lesson_id']
+        new_student = self.validated_data['student_id']
+        lesson.student_id.add(new_student)                           
+        lesson.save()
 
 class LessonStudentSerializer(serializers.ModelSerializer):
 
@@ -69,4 +73,6 @@ class LessonStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ('lesson_id', 'date', 'description', 'student_id')  
+    
+    
 
