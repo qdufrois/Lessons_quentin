@@ -18,6 +18,8 @@ class SubSerializer(serializers.ModelSerializer):
 
 class SubStatusSerializer(serializers.ModelSerializer):
 
+    # subscription_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscription.objects.all())
+
     class Meta:
 
         model = Subscription
