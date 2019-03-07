@@ -21,10 +21,8 @@ class UpdateStatusSubView(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        try:
-            print(request.data)             
-            subscription = Subscription.objects.get(subscription_id=request.data['subscription_id'])
-            
+        try:        
+            subscription = Subscription.objects.get(subscription_id=request.data['subscription_id'])            
             serializer = SubStatusSerializer(subscription, data=request.data)
             if serializer.is_valid():   
                 serializer.save()                        

@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from dashboard.models import Subscription, Lesson, Status
-from account.models import Student
+from account.models import Student, Account
 from account.serializers import StudentSerializer
 
 
 class SubSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
 
         model = Subscription
@@ -17,8 +18,6 @@ class SubSerializer(serializers.ModelSerializer):
 
 
 class SubStatusSerializer(serializers.ModelSerializer):
-
-    # subscription_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscription.objects.all())
 
     class Meta:
 
@@ -66,6 +65,7 @@ class EnrolStudent(serializers.ModelSerializer):
         new_student = self.validated_data['student_id']
         lesson.student_id.add(new_student)                           
         lesson.save()
+
 
 class LessonStudentSerializer(serializers.ModelSerializer):
 
