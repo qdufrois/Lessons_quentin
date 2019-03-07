@@ -26,6 +26,12 @@ class Subscription(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='subscription')
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, related_name='subscription', null=True)
 
+    class Meta:
+        verbose_name = "subscription_id"
+    
+    def __str__(self):
+        return "subscription n°" + str(self.subscription_id)
+
 
 class Lesson(models.Model):
     lesson_id = models.AutoField(primary_key=True)
@@ -37,6 +43,11 @@ class Lesson(models.Model):
     subscription_id = models.ForeignKey(Subscription, on_delete=models.SET_NULL, related_name='lessons', null=True)
     student_id = models.ManyToManyField(Student)
     
+    class Meta:
+        verbose_name = "lesson_id"
+    
+    def __str__(self):
+        return "lesson n°" + str(self.lesson_id)
 
 
 
