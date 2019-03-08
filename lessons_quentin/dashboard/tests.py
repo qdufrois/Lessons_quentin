@@ -41,13 +41,13 @@ class TestDashboardViews(TestCase):
         self.assertEquals(response.status_code, 201)
         self.assertEquals(Lesson.objects.get(lesson_id=2).description, 'This a test lesson')
     
-    # def test_sub_GET(self):
-    #     # Find a way for the get function to accept the kwargs
-    #     response = self.client.get(reverse('dashboard:get_sub'),  kwargs={'pk':1})
-    #     self.assertEquals(response.status_code, 200)
-    #     content = response.json()
-    #     self.assertEquals(content[0]['status']['name'], 'ACTIVE')
-    #     self.assertEquals(content[0]['lessons']['description'], 'This a test lesson')
+    def test_sub_GET(self):
+        # Find a way for the get function to accept the kwargs
+        response = self.client.get(reverse('dashboard:get_sub', pk=1))
+        self.assertEquals(response.status_code, 200)
+        content = response.json()
+        self.assertEquals(content[0]['status']['name'], 'ACTIVE')
+        self.assertEquals(content[0]['lessons']['description'], 'This a test lesson')
 
     def test_enrol_student_POST(self):
         response = self.client.post(reverse('dashboard:enrol_student'), data=self.data_enrol, json=json.dumps(self.data_enrol))

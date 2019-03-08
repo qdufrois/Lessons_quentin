@@ -17,6 +17,7 @@ class UpdateStatusSubView(APIView):
     """This view allows to update the status field of a subscription, via a post request containing
     the subcription and the status instances ids.
     """
+    serializer_class = SubStatusSerializer
     def post(self, request, format=None):
         try:        
             subscription = Subscription.objects.get(subscription_id=request.data['subscription_id'])            
@@ -34,11 +35,11 @@ class EnrolStudentView(APIView):
     """This view allows to create a relationship between a student and a lesson instances, via a post request
     containing their ids.
     """
-
+    serializer_class = EnrolStudent
     def post(self, request, format=None):               
         serializer = EnrolStudent(data=request.data) 
         if serializer.is_valid():
-            serializer.save() # Method overrided to only create the relationship between the two instances
+            serializer.save() # Method overrided to only create the relationship between the two instances            
             return Response('Student added to lesson', status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
