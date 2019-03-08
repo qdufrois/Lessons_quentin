@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from account import views
 from account.models import Account, Student

@@ -61,6 +61,7 @@ class EnrolStudent(serializers.ModelSerializer):
         fields = ('lesson_id', 'student_id')   
 
     def save(self):
+        """Overriden method to only create a link between a student and a lesson"""
         lesson = self.validated_data['lesson_id']
         new_student = self.validated_data['student_id']
         lesson.student_id.add(new_student)                           
@@ -69,7 +70,8 @@ class EnrolStudent(serializers.ModelSerializer):
 
 class LessonStudentSerializer(serializers.ModelSerializer):
 
-    student_id = StudentSerializer(many=True)
+    # To get a nested display
+    student_id = StudentSerializer(many=True) 
     lesson_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Lesson.objects.all())
     
     class Meta:

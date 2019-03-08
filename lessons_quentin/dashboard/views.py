@@ -14,12 +14,9 @@ from dashboard.serializers import SubStatusSerializer, SubSerializer, EnrolStude
 
 
 class UpdateStatusSubView(APIView):
-
-    def get(self, request, format=None):
-        subs = Subscription.objects.all()
-        serializer = SubStatusSerializer(subs, many=True)
-        return Response(serializer.data)
-
+    """This view allows to update the status field of a subscription, via a post request containing
+    the subcription and the status instances ids.
+    """
     def post(self, request, format=None):
         try:        
             subscription = Subscription.objects.get(subscription_id=request.data['subscription_id'])            
@@ -32,7 +29,11 @@ class UpdateStatusSubView(APIView):
         except ObjectDoesNotExist:       
             return Response('This subscription does not exist', status=status.HTTP_404_NOT_FOUND)   
 
+
 class EnrolStudentView(APIView):
+    """This view allows to create a relationship between a student and a lesson instances, via a post request
+    containing their ids.
+    """
 
     def post(self, request, format=None):               
         serializer = EnrolStudent(data=request.data) 
@@ -42,6 +43,3 @@ class EnrolStudentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
-
-# {"subscription_id":1, "status":1}      
-# {"lesson_id":1, "student_id":1}      

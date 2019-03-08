@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include('account.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
+    url(r'^api-auth/', include('rest_framework.urls')),
     
 ]

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 import json
+
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from account.models import Account, Student
 from dashboard.models import Subscription, Status, Lesson
@@ -13,6 +14,8 @@ class TestDashboardViews(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.user = User.objects.create_user(id='1', username='test1', first_name='test', last_name='test', email='test@test.com', password="Test123456")
+        self.client.login(username='test1', password='Test123456')
         Account.objects.create(account_id=1, name='Test_Get', email='testget@gmail.com', password='Maman246', address='25 rue de la Corniche')
         Status.objects.create(status_id=1, name='ACTIVE')
         Subscription.objects.create(subscription_id=1, account_id=Account.objects.get(account_id=1))

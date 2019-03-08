@@ -9,8 +9,10 @@ from account.serializers import AccountSerializer
 
 
 class ListAccountView(ListAPIView):
-    """Overriding the ListAccountView to display either a list of all account or a specific account depending on the url"""    
-    serializer_class = AccountSerializer
+    """Overriding the ListAccountView to display either a list of all account or a specific 
+    account depending on the url
+    """    
+    serializer_class = AccountSerializer    
 
     def get_queryset(self):
         account_id = self.kwargs['account_id']
