@@ -15,4 +15,4 @@ urlpatterns = [
         url(r'^subscription/(?P<pk>\d+)/$', RetrieveAPIView.as_view(queryset=Subscription.objects.all(), serializer_class=SubLessonSerializer), name='get_sub'),
         url(r'^enrol_student$', views.EnrolStudentView.as_view(), name='enrol_student'),
         url(r'^lesson/(?P<pk>\d+)/$', RetrieveAPIView.as_view(queryset=Lesson.objects.all(), serializer_class=LessonStudentSerializer), name='get_lesson'),
-]
+      ]
