@@ -1,9 +1,9 @@
 from django.conf.urls import url
 from django.contrib import admin
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from dashboard.models import Subscription, Lesson
-from dashboard.serializers import SubSerializer, LessonSerializer, SubLessonSerializer, LessonStudentSerializer
+from dashboard.serializers import SubSerializer, LessonSerializer, SubLessonSerializer, LessonStudentSerializer, LockedLessonSerializer
 from dashboard import views
 
 app_name = 'dashboard'
@@ -15,4 +15,5 @@ urlpatterns = [
         url(r'^subscription/(?P<pk>\d+)/$', RetrieveAPIView.as_view(queryset=Subscription.objects.all(), serializer_class=SubLessonSerializer), name='get_sub'),
         url(r'^enrol_student$', views.EnrolStudentView.as_view(), name='enrol_student'),
         url(r'^lesson/(?P<pk>\d+)/$', RetrieveAPIView.as_view(queryset=Lesson.objects.all(), serializer_class=LessonStudentSerializer), name='get_lesson'),
+        url(r'^lock_lesson/(?P<pk>\d+)/$', UpdateAPIView.as_view(queryset=Lesson.objects.all(), serializer_class=LockedLessonSerializer), name='lock_lesson'),
       ]

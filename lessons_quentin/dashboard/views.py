@@ -39,8 +39,10 @@ class EnrolStudentView(APIView):
     def post(self, request, format=None):               
         serializer = EnrolStudent(data=request.data) 
         if serializer.is_valid():
-            serializer.save() # Method overrided to only create the relationship between the two instances            
-            return Response('Student added to lesson', status=status.HTTP_201_CREATED)
+            # Checking if the lesson is not locked, and overriding the .save method to create the relationship between the two instances
+            if not serializer.save():              
+                return Response('Student added to lesson', status=status.HTTP_201_CREATED)
+            return Response('Lesson full, no more student can be added', status=status.HTTP_403_FORBIDDEN)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     

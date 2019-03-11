@@ -39,6 +39,7 @@ class Lesson(models.Model):
     description = models.TextField()
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+    locked = models.BooleanField(default=False)
 
     subscription_id = models.ForeignKey(Subscription, on_delete=models.SET_NULL, related_name='lessons', null=True)
     student_id = models.ManyToManyField(Student)

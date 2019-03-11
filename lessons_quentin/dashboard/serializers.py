@@ -61,8 +61,12 @@ class EnrolStudent(serializers.ModelSerializer):
         fields = ('lesson_id', 'student_id')   
 
     def save(self):
-        """Overriden method to only create a link between a student and a lesson"""
+        """Overriden method to check if the lesson is not locked, and then
+        only create a link between a student and a lesson
+        """
         lesson = self.validated_data['lesson_id']
+        if lesson.locked:
+            return True
         new_student = self.validated_data['student_id']
         lesson.student_id.add(new_student)                           
         lesson.save()
@@ -79,4 +83,8 @@ class LessonStudentSerializer(serializers.ModelSerializer):
         fields = ('lesson_id', 'date', 'description', 'student_id')  
     
     
+class LockedLessonSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Lesson
+        fields = ('locked',)
