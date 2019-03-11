@@ -16,13 +16,6 @@ class SubSerializer(serializers.ModelSerializer):
         fields = ("account_id",)
 
 
-class SubStatusSerializer(serializers.ModelSerializer):
-    class Meta:
-
-        model = Subscription
-        fields = ("subscription_id", "status")
-
-
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
 
@@ -36,6 +29,13 @@ class StatusSerializer(serializers.ModelSerializer):
         model = Status
         fields = ("status_id", "name")
 
+
+class SubStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = Subscription
+        fields = ("subscription_id", "status")
+        
 
 class SubLessonSerializer(serializers.ModelSerializer):
 
@@ -89,3 +89,22 @@ class LockedLessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ("locked",)
+
+
+class SubStatusSerializerExtended(serializers.ModelSerializer):
+
+    status = StatusSerializer()
+
+    class Meta:
+
+        model = Subscription
+        fields = ("subscription_id", "status")
+
+
+class AccountSubSerializer(serializers.ModelSerializer):
+
+    subscription = SubStatusSerializerExtended()
+   
+    class Meta:
+        model = Account
+        fields = ('name', 'email', 'subscription', )

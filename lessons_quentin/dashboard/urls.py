@@ -1,7 +1,8 @@
 from django.conf.urls import url
 from django.contrib import admin
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView
+from account.models import Account
 from dashboard.models import Subscription, Lesson
 from dashboard.serializers import (
     SubSerializer,
@@ -9,6 +10,7 @@ from dashboard.serializers import (
     SubLessonSerializer,
     LessonStudentSerializer,
     LockedLessonSerializer,
+    AccountSubSerializer,
 )
 from dashboard import views
 
@@ -53,4 +55,13 @@ urlpatterns = [
         ),
         name="lock_lesson",
     ),
+    url(
+        r"^subscriptions/(?P<pk>\d+)/$",
+        ListAPIView.as_view(
+            queryset=Account.objects.all(), serializer_class=AccountSubSerializer
+        ),
+        name="account_sub",
+    
+        
+    )   
 ]
