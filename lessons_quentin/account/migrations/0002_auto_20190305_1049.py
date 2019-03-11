@@ -7,18 +7,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('account', '0001_initial'),
-    ]
+    dependencies = [("account", "0001_initial")]
 
     operations = [
         migrations.RenameField(
-            model_name='student',
-            old_name='account',
-            new_name='account_id',
+            model_name="student", old_name="account", new_name="account_id"
         ),
         migrations.AlterUniqueTogether(
-            name='student',
-            unique_together=set([('account_id', 'first_name', 'last_name')]),
+            name="student",
+            unique_together=set([("account_id", "first_name", "last_name")]),
         ),
     ]

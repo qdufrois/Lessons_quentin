@@ -7,14 +7,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('dashboard', '0011_auto_20190307_1909'),
-    ]
+    dependencies = [("dashboard", "0011_auto_20190307_1909")]
 
     operations = [
         migrations.AddField(
-            model_name='lesson',
-            name='locked',
-            field=models.BooleanField(default=False),
-        ),
+            model_name="lesson", name="locked", field=models.BooleanField(default=False)
+        )
     ]

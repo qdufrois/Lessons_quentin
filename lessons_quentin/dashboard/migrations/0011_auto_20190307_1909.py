@@ -7,17 +7,13 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('dashboard', '0010_auto_20190307_0859'),
-    ]
+    dependencies = [("dashboard", "0010_auto_20190307_0859")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='lesson',
-            options={'verbose_name': 'lesson_id'},
+            name="lesson", options={"verbose_name": "lesson_id"}
         ),
         migrations.AlterModelOptions(
-            name='subscription',
-            options={'verbose_name': 'subscription_id'},
+            name="subscription", options={"verbose_name": "subscription_id"}
         ),
     ]
