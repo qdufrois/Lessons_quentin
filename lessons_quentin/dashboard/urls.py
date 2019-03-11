@@ -32,7 +32,7 @@ urlpatterns = [
         name="post_lesson",
     ),
     url(
-        r"^subscription/(?P<pk>\d+)/$",
+        r"^subscription_lessons/(?P<pk>\d+)/$",
         RetrieveAPIView.as_view(
             queryset=Subscription.objects.all(), serializer_class=SubLessonSerializer
         ),
