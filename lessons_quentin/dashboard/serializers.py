@@ -10,81 +10,82 @@ from account.serializers import StudentSerializer
 
 
 class SubSerializer(serializers.ModelSerializer):
-    
     class Meta:
 
         model = Subscription
-        fields = ('account_id',)
+        fields = ("account_id",)
 
 
 class SubStatusSerializer(serializers.ModelSerializer):
-
     class Meta:
 
         model = Subscription
-        fields = ('subscription_id', 'status',)
+        fields = ("subscription_id", "status")
 
 
-class LessonSerializer(serializers.ModelSerializer):   
-    
+class LessonSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Lesson
-        fields = ('lesson_id', 'subscription_id', 'date', 'description')                   
-        extra_kwargs = {'subscription_id': {'write_only': True}}
+        fields = ("lesson_id", "subscription_id", "date", "description")
+        extra_kwargs = {"subscription_id": {"write_only": True}}
 
 
 class StatusSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Status
-        fields = ('status_id', 'name')
+        fields = ("status_id", "name")
 
 
 class SubLessonSerializer(serializers.ModelSerializer):
 
-        status = StatusSerializer()
-        lessons = LessonSerializer(many=True)
+    status = StatusSerializer()
+    lessons = LessonSerializer(many=True)
 
-        class Meta:
-            model = Subscription
-            fields = ('subscription_id', 'status', 'subscription_date','lessons', )
-        
+    class Meta:
+        model = Subscription
+        fields = ("subscription_id", "status", "subscription_date", "lessons")
+
 
 class EnrolStudent(serializers.ModelSerializer):
 
-    lesson_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Lesson.objects.all())
-    student_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Student.objects.all())
+    lesson_id = serializers.PrimaryKeyRelatedField(
+        many=False, queryset=Lesson.objects.all()
+    )
+    student_id = serializers.PrimaryKeyRelatedField(
+        many=False, queryset=Student.objects.all()
+    )
 
     class Meta:
         model = Lesson
-        fields = ('lesson_id', 'student_id')   
+        fields = ("lesson_id", "student_id")
 
     def save(self):
         """Overriden method to check if the lesson is not locked, and then
         only create a link between a student and a lesson
         """
-        lesson = self.validated_data['lesson_id']
+        lesson = self.validated_data["lesson_id"]
         if lesson.locked:
             return True
-        new_student = self.validated_data['student_id']
-        lesson.student_id.add(new_student)                           
+        new_student = self.validated_data["student_id"]
+        lesson.student_id.add(new_student)
         lesson.save()
 
 
 class LessonStudentSerializer(serializers.ModelSerializer):
 
     # To get a nested display
-    student_id = StudentSerializer(many=True) 
-    lesson_id = serializers.PrimaryKeyRelatedField(many=False, queryset=Lesson.objects.all())
-    
-    class Meta:
-        model = Lesson
-        fields = ('lesson_id', 'date', 'description', 'student_id')  
-    
-    
-class LockedLessonSerializer(serializers.ModelSerializer):
+    student_id = StudentSerializer(many=True)
+    lesson_id = serializers.PrimaryKeyRelatedField(
+        many=False, queryset=Lesson.objects.all()
+    )
 
     class Meta:
         model = Lesson
-        fields = ('locked',)
+        fields = ("lesson_id", "date", "description", "student_id")
+
+
+class LockedLessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ("locked",)

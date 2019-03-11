@@ -10,47 +10,48 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Account',
+            name="Account",
             fields=[
-                ('account_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254, null=True)),
-                ('password', models.CharField(max_length=255)),
-                ('address', models.CharField(max_length=255, null=True)),
-                ('insert_date', models.DateTimeField(auto_now_add=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
+                ("account_id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=254, null=True)),
+                ("password", models.CharField(max_length=255)),
+                ("address", models.CharField(max_length=255, null=True)),
+                ("insert_date", models.DateTimeField(auto_now_add=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
             ],
-            options={
-                'verbose_name': 'account',
-            },
+            options={"verbose_name": "account"},
         ),
         migrations.CreateModel(
-            name='Student',
+            name="Student",
             fields=[
-                ('student_id', models.AutoField(primary_key=True, serialize=False)),
-                ('first_name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
-                ('birthdate', models.DateField(null=True)),
-                ('email', models.EmailField(max_length=254, null=True)),
-                ('insert_date', models.DateTimeField(auto_now_add=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
-                ('account', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='students', to='account.Account')),
+                ("student_id", models.AutoField(primary_key=True, serialize=False)),
+                ("first_name", models.CharField(max_length=100)),
+                ("last_name", models.CharField(max_length=100)),
+                ("birthdate", models.DateField(null=True)),
+                ("email", models.EmailField(max_length=254, null=True)),
+                ("insert_date", models.DateTimeField(auto_now_add=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
+                (
+                    "account",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="students",
+                        to="account.Account",
+                    ),
+                ),
             ],
-            options={
-                'verbose_name': 'student',
-            },
+            options={"verbose_name": "student"},
         ),
         migrations.AlterUniqueTogether(
-            name='account',
-            unique_together=set([('name', 'password')]),
+            name="account", unique_together=set([("name", "password")])
         ),
         migrations.AlterUniqueTogether(
-            name='student',
-            unique_together=set([('account', 'first_name', 'last_name')]),
+            name="student",
+            unique_together=set([("account", "first_name", "last_name")]),
         ),
     ]

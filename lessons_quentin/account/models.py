@@ -9,17 +9,17 @@ class Account(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(null=True)
     password = models.CharField(max_length=255)
-    address = models.CharField(max_length=255, null=True) 
+    address = models.CharField(max_length=255, null=True)
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "account"
         unique_together = ("name", "password")
-    
+
     def __str__(self):
         return self.name
-    
+
 
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
@@ -30,13 +30,13 @@ class Student(models.Model):
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    account_id = models.ForeignKey(Account, related_name='students', on_delete=models.CASCADE)
+    account_id = models.ForeignKey(
+        Account, related_name="students", on_delete=models.CASCADE
+    )
 
     class Meta:
         verbose_name = "student"
         unique_together = ("account_id", "first_name", "last_name")
-    
+
     def __str__(self):
         return self.first_name + " " + self.last_name
-    
-

@@ -8,18 +8,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_auto_20190305_1049'),
-        ('dashboard', '0007_auto_20190305_1717'),
+        ("account", "0002_auto_20190305_1049"),
+        ("dashboard", "0007_auto_20190305_1717"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='lesson',
-            name='student',
-        ),
+        migrations.RemoveField(model_name="lesson", name="student"),
         migrations.AddField(
-            model_name='lesson',
-            name='student_id',
-            field=models.ManyToManyField(to='account.Student'),
+            model_name="lesson",
+            name="student_id",
+            field=models.ManyToManyField(to="account.Student"),
         ),
     ]

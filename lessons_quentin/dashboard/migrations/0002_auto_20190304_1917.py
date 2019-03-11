@@ -8,19 +8,26 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('dashboard', '0001_initial'),
-    ]
+    dependencies = [("dashboard", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='subscription',
-            name='account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subscription', to='account.Account'),
+            model_name="subscription",
+            name="account",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="subscription",
+                to="account.Account",
+            ),
         ),
         migrations.AlterField(
-            model_name='subscription',
-            name='status',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='subscription', to='dashboard.Status'),
+            model_name="subscription",
+            name="status",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="subscription",
+                to="dashboard.Status",
+            ),
         ),
     ]

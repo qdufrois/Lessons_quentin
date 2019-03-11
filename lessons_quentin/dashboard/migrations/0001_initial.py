@@ -10,46 +10,62 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('account', '0001_initial'),
-    ]
+    dependencies = [("account", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='Lesson',
+            name="Lesson",
             fields=[
-                ('lesson_id', models.AutoField(primary_key=True, serialize=False)),
-                ('date', models.DateTimeField(null=True)),
-                ('description', models.TextField()),
-                ('insert_date', models.DateTimeField(auto_now_add=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
+                ("lesson_id", models.AutoField(primary_key=True, serialize=False)),
+                ("date", models.DateTimeField(null=True)),
+                ("description", models.TextField()),
+                ("insert_date", models.DateTimeField(auto_now_add=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Status',
+            name="Status",
             fields=[
-                ('status_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=50)),
-                ('insert_date', models.DateTimeField(auto_now_add=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
+                ("status_id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=50)),
+                ("insert_date", models.DateTimeField(auto_now_add=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
             ],
-            options={
-                'verbose_name': 'name',
-            },
+            options={"verbose_name": "name"},
         ),
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('subscription_id', models.AutoField(primary_key=True, serialize=False)),
-                ('subscription_date', models.DateTimeField(auto_now_add=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
-                ('account', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.Account')),
-                ('status', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='dashboard.Status')),
+                (
+                    "subscription_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("subscription_date", models.DateTimeField(auto_now_add=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
+                (
+                    "account",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="account.Account",
+                    ),
+                ),
+                (
+                    "status",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="dashboard.Status",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='lesson',
-            name='subscription_id',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='dashboard.Subscription'),
+            model_name="lesson",
+            name="subscription_id",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="dashboard.Subscription",
+            ),
         ),
     ]
