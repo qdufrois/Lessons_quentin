@@ -77,7 +77,7 @@ class LessonStudentSerializer(serializers.ModelSerializer):
     # To get a nested display
     student_id = StudentSerializer(many=True)
     lesson_id = serializers.PrimaryKeyRelatedField(
-        many=False, queryset=Lesson.objects.all()
+        many=False, queryset=Lesson.objects.all(),
     )
 
     class Meta:
@@ -103,7 +103,7 @@ class SubStatusSerializerExtended(serializers.ModelSerializer):
 
 class AccountSubSerializer(serializers.ModelSerializer):
 
-    subscription = SubStatusSerializerExtended()
+    subscription = SubStatusSerializerExtended(many=True)
    
     class Meta:
         model = Account
