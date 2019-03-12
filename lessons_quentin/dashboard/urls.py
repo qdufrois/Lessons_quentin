@@ -1,21 +1,30 @@
 from django.conf.urls import url
 from django.contrib import admin
+from rest_framework.generics import (
+    ListAPIView,
+    CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
-from dashboard.models import Subscription, Lesson
+from account.models import Account
+from dashboard import views
+from dashboard.models import Subscription, Lesson, Status
 from dashboard.serializers import (
     SubSerializer,
     LessonSerializer,
     SubLessonSerializer,
     LessonStudentSerializer,
     LockedLessonSerializer,
+    AccountSubSerializer,
+    StatusSerializer,
 )
-from dashboard import views
 
 
 app_name = "dashboard"
 
 urlpatterns = [
+    # Post url to create an subscription instance
     url(
         r"^create_sub$",
         CreateAPIView.as_view(
@@ -23,7 +32,9 @@ urlpatterns = [
         ),
         name="post_sub",
     ),
+    # Post url to update the status of a subscription
     url(r"^update_status$", views.UpdateStatusSubView.as_view(), name="update_status"),
+    # Post url to create a lesson instance
     url(
         r"^create_lesson$",
         CreateAPIView.as_view(
@@ -31,6 +42,7 @@ urlpatterns = [
         ),
         name="post_lesson",
     ),
+    # Get url to retrieve a subscription and all its lessons
     url(
         r"^subscription_lessons/(?P<pk>\d+)/$",
         RetrieveAPIView.as_view(
@@ -38,7 +50,9 @@ urlpatterns = [
         ),
         name="get_sub",
     ),
+    # Post url to create a link between a student and a lesson
     url(r"^enrol_student$", views.EnrolStudentView.as_view(), name="enrol_student"),
+    # Get url to retrieve a lesson and all its students
     url(
         r"^lesson/(?P<pk>\d+)/$",
         RetrieveAPIView.as_view(
@@ -46,6 +60,7 @@ urlpatterns = [
         ),
         name="get_lesson",
     ),
+    # Patch url to lock or unlock a lesson
     url(
         r"^lock_lesson/(?P<pk>\d+)/$",
         UpdateAPIView.as_view(
@@ -53,4 +68,19 @@ urlpatterns = [
         ),
         name="lock_lesson",
     ),
+    # Get url to retrieve an account and all its subscriptions (including their statuses)
+    url(
+        r"^subscriptions/(?P<pk>\d+)/$",
+        RetrieveAPIView.as_view(
+            queryset=Account.objects.all(), serializer_class=AccountSubSerializer
+        ),
+        name="account_sub",
+    ),
+    # Get url to retrieve all the status
+    url(
+        r"^all_status/$",
+        ListAPIView.as_view(
+            queryset=Status.objects.all(), serializer_class=StatusSerializer
+        ),
+    )
 ]

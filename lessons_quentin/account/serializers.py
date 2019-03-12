@@ -7,6 +7,9 @@ from account.models import Account, Student
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    """ Serializing the informations of a student, and managing as unique 
+    together the fields account_id, first_name and last_name
+    """
     class Meta:
         model = Student
         fields = ("account_id", "first_name", "last_name", "email", "birthdate")
@@ -21,6 +24,8 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    """Serializing the informations of an account, and managing as unique
+    together the fields name and password"""
 
     # To get nested students infos into the account display
     students = StudentSerializer(many=True, read_only=True)
