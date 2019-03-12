@@ -30,7 +30,7 @@ class TestAccountViews(TestCase):
             password="Maman246",
             address="25 rue de la Corniche",
         )
-        # Those data sets are going to be used for test POST further
+        # Those data sets are going to be used for further test POST 
         self.data_account = {
             "name": "Test_Post",
             "email": "testpost@gmail.com",

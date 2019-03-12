@@ -10,6 +10,8 @@ from account.serializers import StudentSerializer
 
 
 class SubSerializer(serializers.ModelSerializer):
+    """Serializer used to create a new subscription, linked to an account"""
+
     class Meta:
 
         model = Subscription
@@ -17,6 +19,8 @@ class SubSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    """Serializing the informations of a lesson"""
+
     class Meta:
 
         model = Lesson
@@ -25,20 +29,28 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class StatusSerializer(serializers.ModelSerializer):
+    """Serializing the informations of a status"""
+
     class Meta:
         model = Status
         fields = ("status_id", "name")
 
 
 class SubStatusSerializer(serializers.ModelSerializer):
+    """Serializer used to add a status to a subcription"""
+
     class Meta:
 
         model = Subscription
         fields = ("subscription_id", "status")
-        
+
 
 class SubLessonSerializer(serializers.ModelSerializer):
+    """Serializing the informations of a subscriptions, and allows
+    for the displays of nested statuses and lessons informations
+    """
 
+    # To get a nested display
     status = StatusSerializer()
     lessons = LessonSerializer(many=True)
 
@@ -48,6 +60,7 @@ class SubLessonSerializer(serializers.ModelSerializer):
 
 
 class EnrolStudent(serializers.ModelSerializer):
+    """Serializer used to create a relationship between a lesson and a student"""
 
     lesson_id = serializers.PrimaryKeyRelatedField(
         many=False, queryset=Lesson.objects.all()
@@ -73,11 +86,14 @@ class EnrolStudent(serializers.ModelSerializer):
 
 
 class LessonStudentSerializer(serializers.ModelSerializer):
+    """Serializing the informations of a lesson, and allows
+    for the displays of nested student informations
+    """
 
     # To get a nested display
     student_id = StudentSerializer(many=True)
     lesson_id = serializers.PrimaryKeyRelatedField(
-        many=False, queryset=Lesson.objects.all(),
+        many=False, queryset=Lesson.objects.all()
     )
 
     class Meta:
@@ -86,13 +102,19 @@ class LessonStudentSerializer(serializers.ModelSerializer):
 
 
 class LockedLessonSerializer(serializers.ModelSerializer):
+    """Serializer used to lock/unlock a lesson"""
+
     class Meta:
         model = Lesson
         fields = ("locked",)
 
 
 class SubStatusSerializerExtended(serializers.ModelSerializer):
+    """Serializer used to display nested informations about a subscription
+    in the following AccounSubSerializer
+    """
 
+    # To get a nested display
     status = StatusSerializer()
 
     class Meta:
@@ -102,9 +124,13 @@ class SubStatusSerializerExtended(serializers.ModelSerializer):
 
 
 class AccountSubSerializer(serializers.ModelSerializer):
+    """Serializing the informations of an account, and allows
+    for the displays of nested subscriptions informations
+    """
 
+    # To get a nested display
     subscription = SubStatusSerializerExtended(many=True)
-   
+
     class Meta:
         model = Account
-        fields = ('name', 'email', 'subscription', )
+        fields = ("name", "email", "subscription")
