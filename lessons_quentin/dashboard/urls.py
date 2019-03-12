@@ -9,7 +9,7 @@ from rest_framework.generics import (
 
 from account.models import Account
 from dashboard import views
-from dashboard.models import Subscription, Lesson
+from dashboard.models import Subscription, Lesson, Status
 from dashboard.serializers import (
     SubSerializer,
     LessonSerializer,
@@ -17,6 +17,7 @@ from dashboard.serializers import (
     LessonStudentSerializer,
     LockedLessonSerializer,
     AccountSubSerializer,
+    StatusSerializer,
 )
 
 
@@ -75,4 +76,11 @@ urlpatterns = [
         ),
         name="account_sub",
     ),
+    # Get url to retrieve all the status
+    url(
+        r"^all_status/$",
+        ListAPIView.as_view(
+            queryset=Status.objects.all(), serializer_class=StatusSerializer
+        ),
+    )
 ]
