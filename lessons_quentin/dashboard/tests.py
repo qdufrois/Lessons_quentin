@@ -34,7 +34,9 @@ class TestDashboardViews(TestCase):
         )
         Status.objects.create(status_id=1, name="ACTIVE")
         Subscription.objects.create(
-            subscription_id=1, account_id=Account.objects.get(account_id=1)
+            subscription_id=1, 
+            account_id=Account.objects.get(account_id=1),
+            status=Status.objects.get(status_id=1),
         )
         Student.objects.create(
             student_id=1,
@@ -101,13 +103,17 @@ class TestDashboardViews(TestCase):
             Lesson.objects.get(lesson_id=2).description, "This a test lesson"
         )
 
-    # def test_sub_GET(self):
-    #     # Find a way for the get function to accept the kwargs
-    #     response = self.client.get(reverse('dashboard:get_sub'),  kwargs={'pk':1})
-    #     self.assertEquals(response.status_code, 200)
-    #     content = response.json()
-    #     self.assertEquals(content[0]['status']['name'], 'ACTIVE')
-    #     self.assertEquals(content[0]['lessons']['description'], 'This a test lesson')
+    def test_sub_GET(self):
+        """Testing if the db data of a subscription are well displayed and 
+        recoverable via a get
+        """
+        response = self.client.get(reverse('dashboard:get_sub',  kwargs={'pk':1}))
+        # Checking the status code and the information displayed, 
+        # includind nested informations on status and lessons
+        self.assertEquals(response.status_code, 200)
+        content = response.json()        
+        self.assertEquals(content['status']['name'], 'ACTIVE')
+        self.assertEquals(content['lessons'][0]['description'], 'First test lesson')
 
     def test_enrol_student_POST(self):
         """Testing if a relationship between a lesson and a student 
