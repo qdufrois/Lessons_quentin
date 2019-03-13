@@ -129,8 +129,8 @@ class AccountSubSerializer(serializers.ModelSerializer):
     """
 
     # To get a nested display
-    subscription = SubStatusSerializerExtended(many=True)
+    subscriptions = SubStatusSerializerExtended(many=True)
 
     class Meta:
         model = Account
-        fields = ("name", "email", "subscription")
+        fields = ("name", "email", "subscriptions")

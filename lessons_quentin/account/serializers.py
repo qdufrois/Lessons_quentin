@@ -10,6 +10,7 @@ class StudentSerializer(serializers.ModelSerializer):
     """ Serializing the informations of a student, and managing as unique 
     together the fields account_id, first_name and last_name
     """
+
     class Meta:
         model = Student
         fields = ("account_id", "first_name", "last_name", "email", "birthdate")

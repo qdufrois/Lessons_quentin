@@ -5,6 +5,7 @@ import json
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from account.models import Account, Student
 
@@ -25,12 +26,12 @@ class TestAccountViews(TestCase):
         # Creation of a test account
         Account.objects.create(
             account_id=1,
-            name="Test_Get",
+            name="Test_account",
             email="testget@gmail.com",
             password="Maman246",
             address="25 rue de la Corniche",
         )
-        # Those data sets are going to be used for further test POST 
+        # Those data sets are going to be used for further test POST
         self.data_account = {
             "name": "Test_Post",
             "email": "testpost@gmail.com",
@@ -80,7 +81,7 @@ class TestAccountViews(TestCase):
         # Checking the status code and the information displayed
         self.assertEquals(response.status_code, 200)
         content = response.json()
-        self.assertEquals(content[0]["name"], "Test_Get")
+        self.assertEquals(content[0]["name"], "Test_account")
         # Checking the password is not displayed
         with self.assertRaises(KeyError):
             pwd = content[0]["password"]
@@ -115,3 +116,11 @@ class TestAccountViews(TestCase):
             json=json.dumps(self.data_account),
         )
         self.assertEquals(response_post.status_code, 403)
+
+    def test_delete_student(self):
+        """ Testing the deletion of a student"""
+        response = self.client.delete(
+            reverse("account:delete_student", kwargs={"pk": 1})
+        )
+        with self.assertRaises(ObjectDoesNotExist):
+            student = Student.objects.get(pk=1)

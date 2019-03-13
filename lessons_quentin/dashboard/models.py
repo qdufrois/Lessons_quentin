@@ -12,7 +12,7 @@ class Status(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "name"
+        verbose_name = "Status"
 
     def __str__(self):
         return self.name
@@ -24,14 +24,14 @@ class Subscription(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     account_id = models.ForeignKey(
-        Account, on_delete=models.CASCADE, related_name="subscription"
+        Account, on_delete=models.CASCADE, related_name="subscriptions"
     )
     status = models.ForeignKey(
         Status, on_delete=models.SET_NULL, related_name="subscription", null=True
     )
 
     class Meta:
-        verbose_name = "subscription_id"
+        verbose_name = "Subscription"
 
     def __str__(self):
         return "subscription n°" + str(self.subscription_id)
@@ -51,7 +51,7 @@ class Lesson(models.Model):
     student_id = models.ManyToManyField(Student)
 
     class Meta:
-        verbose_name = "lesson_id"
+        verbose_name = "Lesson"
 
     def __str__(self):
         return "lesson n°" + str(self.lesson_id)
