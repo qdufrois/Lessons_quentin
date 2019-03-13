@@ -27,14 +27,16 @@ class TestDashboardViews(TestCase):
         # test student and test lesson instances
         Account.objects.create(
             account_id=1,
-            name="Test_Get",
+            name="Test_account",
             email="testget@gmail.com",
             password="Maman246",
             address="25 rue de la Corniche",
         )
         Status.objects.create(status_id=1, name="ACTIVE")
         Subscription.objects.create(
-            subscription_id=1, account_id=Account.objects.get(account_id=1)
+            subscription_id=1,
+            account_id=Account.objects.get(account_id=1),
+            status=Status.objects.get(status_id=1),
         )
         Student.objects.create(
             student_id=1,
@@ -58,6 +60,7 @@ class TestDashboardViews(TestCase):
             "description": "This a test lesson",
         }
         self.data_enrol = {"lesson_id": 1, "student_id": 1}
+        self.data_lock = {"locked": True}
 
     def test_sub_POST(self):
         """Testing if a subscriptions is well created from JSON data"""
@@ -70,7 +73,7 @@ class TestDashboardViews(TestCase):
         # has been created in the db
         self.assertEquals(response.status_code, 201)
         self.assertEquals(
-            Subscription.objects.get(subscription_id=2).account_id.name, "Test_Get"
+            Subscription.objects.get(subscription_id=2).account_id.name, "Test_account"
         )
 
     def test_sub_status_POST(self):
@@ -101,13 +104,17 @@ class TestDashboardViews(TestCase):
             Lesson.objects.get(lesson_id=2).description, "This a test lesson"
         )
 
-    # def test_sub_GET(self):
-    #     # Find a way for the get function to accept the kwargs
-    #     response = self.client.get(reverse('dashboard:get_sub'),  kwargs={'pk':1})
-    #     self.assertEquals(response.status_code, 200)
-    #     content = response.json()
-    #     self.assertEquals(content[0]['status']['name'], 'ACTIVE')
-    #     self.assertEquals(content[0]['lessons']['description'], 'This a test lesson')
+    def test_sub_GET(self):
+        """Testing if the db data of a subscription are well displayed and 
+        recoverable via a get
+        """
+        response = self.client.get(reverse("dashboard:get_sub", kwargs={"pk": 1}))
+        # Checking the status code and the information displayed,
+        # includind nested informations on status and lessons
+        self.assertEquals(response.status_code, 200)
+        content = response.json()
+        self.assertEquals(content["status"]["name"], "ACTIVE")
+        self.assertEquals(content["lessons"][0]["description"], "First test lesson")
 
     def test_enrol_student_POST(self):
         """Testing if a relationship between a lesson and a student 
@@ -122,3 +129,66 @@ class TestDashboardViews(TestCase):
         self.assertEquals(response.status_code, 201)
         lesson = Lesson.objects.get(pk=1)
         self.assertEquals(lesson.student_id.get(pk=1).first_name, "Test")
+
+    def test_lesson_GET(self):
+        """Testing if the db data of a lesson are well displayed and 
+        recoverable via a get
+        """
+        # Adding a student to the lesson
+        response = self.client.post(
+            reverse("dashboard:enrol_student"),
+            data=self.data_enrol,
+            json=json.dumps(self.data_enrol),
+        )
+        response = self.client.get(reverse("dashboard:get_lesson", kwargs={"pk": 1}))
+        # Checking the status code and the information displayed,
+        # includind nested informations on the students
+        self.assertEquals(response.status_code, 200)
+        content = response.json()
+        self.assertEquals(content["description"], "First test lesson")
+        self.assertEquals(content["student_id"][0]["first_name"], "Test")
+
+    def test_lock_lesson_PATCH(self):
+        """Testing if a lesson is well locked via a patch request. 
+        A locked lesson should refuse any new relationship with a student
+        """
+        data = json.dumps(self.data_lock)  # The format differs from post method
+        # otherwise I get a 415 status code response
+        response = self.client.patch(
+            reverse("dashboard:lock_lesson", kwargs={"pk": 1}),
+            data=data,
+            content_type="application/json",
+        )
+        # Checking the expected reponse status and if the locked
+        # field has been well updated to True
+        self.assertEquals(response.status_code, 200)
+        lesson = Lesson.objects.get(pk=1)
+        self.assertTrue(lesson.locked)
+        # Trying to create a relationship with a student
+        # and confirming it is denied
+        response = self.client.post(
+            reverse("dashboard:enrol_student"),
+            data=self.data_enrol,
+            json=json.dumps(self.data_enrol),
+        )
+        self.assertEquals(response.status_code, 403)
+
+    def test_account_sub_GET(self):
+        """Testing if the db data of an account and its subscriptions
+        are well displayed and recoverable via a get
+        """
+        response = self.client.get(reverse("dashboard:account_sub", kwargs={"pk": 1}))
+        # Checking the status code and the information displayed,
+        # includind nested informations on subscription and status
+        self.assertEquals(response.status_code, 200)
+        content = response.json()
+        self.assertEquals(content["name"], "Test_account")
+        self.assertEquals(content["subscriptions"][0]["status"]["name"], "ACTIVE")
+
+    def test_status_GET(self):
+        """Testing if the db data of a status are well displayed and recoverable via a get"""
+        response = self.client.get(reverse("dashboard:all_status"))
+        # Checking the status code and the information displayed
+        self.assertEquals(response.status_code, 200)
+        content = response.json()
+        self.assertEquals(content[0]["name"], "ACTIVE")

@@ -82,5 +82,6 @@ urlpatterns = [
         ListAPIView.as_view(
             queryset=Status.objects.all(), serializer_class=StatusSerializer
         ),
-    )
+        name="all_status",
+    ),
 ]

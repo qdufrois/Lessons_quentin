@@ -14,7 +14,7 @@ class Account(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "account"
+        verbose_name = "Account"
         unique_together = ("name", "password")
 
     def __str__(self):
@@ -35,7 +35,7 @@ class Student(models.Model):
     )
 
     class Meta:
-        verbose_name = "student"
+        verbose_name = "Student"
         unique_together = ("account_id", "first_name", "last_name")
 
     def __str__(self):
