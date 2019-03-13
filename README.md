@@ -30,9 +30,9 @@ python manage.py migrate
 ```
 python manage.py shell
 >>> from dashboard.models import Status
->>> Status.objects.create(name='ACTIVE')
->>> Status.objects.create(name='CANCELLED')
->>> Status.objects.create(name='PAUSED')
+>>> Status.objects.create(name='Active')
+>>> Status.objects.create(name='Paused')
+>>> Status.objects.create(name='Cancelled')
 >>> quit()
 ```
 
