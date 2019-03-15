@@ -35,12 +35,12 @@ class TestDashboardViews(TestCase):
         Status.objects.create(status_id=1, name="ACTIVE")
         Subscription.objects.create(
             subscription_id=1,
-            account_id=Account.objects.get(account_id=1),
+            account=Account.objects.get(account_id=1),
             status=Status.objects.get(status_id=1),
         )
         Student.objects.create(
             student_id=1,
-            account_id=Account.objects.get(account_id=1),
+            account=Account.objects.get(account_id=1),
             first_name="Test",
             last_name="Student",
             birthdate="1970-01-01",
@@ -48,7 +48,7 @@ class TestDashboardViews(TestCase):
         )
         Lesson.objects.create(
             lesson_id=1,
-            subscription_id=Subscription.objects.get(subscription_id=1),
+            subscription=Subscription.objects.get(subscription_id=1),
             description="First test lesson",
         )
         # Those data sets are going to be used for further test POST
@@ -73,7 +73,7 @@ class TestDashboardViews(TestCase):
         # has been created in the db
         self.assertEquals(response.status_code, 201)
         self.assertEquals(
-            Subscription.objects.get(subscription_id=2).account_id.name, "Test_account"
+            Subscription.objects.get(subscription_id=2).account.name, "Test_account"
         )
 
     def test_sub_status_POST(self):
@@ -128,7 +128,7 @@ class TestDashboardViews(TestCase):
         # has been created in the db
         self.assertEquals(response.status_code, 201)
         lesson = Lesson.objects.get(pk=1)
-        self.assertEquals(lesson.student_id.get(pk=1).first_name, "Test")
+        self.assertEquals(lesson.students.get(pk=1).first_name, "Test")
 
     def test_lesson_GET(self):
         """Testing if the db data of a lesson are well displayed and 
@@ -146,7 +146,7 @@ class TestDashboardViews(TestCase):
         self.assertEquals(response.status_code, 200)
         content = response.json()
         self.assertEquals(content["description"], "First test lesson")
-        self.assertEquals(content["student_id"][0]["first_name"], "Test")
+        self.assertEquals(content["students"][0]["first_name"], "Test")
 
     def test_lock_lesson_PATCH(self):
         """Testing if a lesson is well locked via a patch request. 

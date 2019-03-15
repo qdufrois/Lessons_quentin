@@ -11,13 +11,18 @@ class StudentSerializer(serializers.ModelSerializer):
     together the fields account_id, first_name and last_name
     """
 
+    birthdate = serializers.DateField(format=None)
+    account_id = serializers.PrimaryKeyRelatedField(
+        source="account", queryset=Account.objects.all()
+    )
+
     class Meta:
         model = Student
         fields = ("account_id", "first_name", "last_name", "email", "birthdate")
         validators = [
             UniqueTogetherValidator(
                 queryset=Student.objects.all(),
-                fields=("account_id", "first_name", "last_name"),
+                fields=("account", "first_name", "last_name"),
                 message="This student already exist",
             )
         ]
@@ -33,7 +38,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ("name", "email", "address", "password", "students")
+        fields = ("account_id", "name", "email", "address", "password", "students")
         validators = [
             UniqueTogetherValidator(
                 queryset=Account.objects.all(),

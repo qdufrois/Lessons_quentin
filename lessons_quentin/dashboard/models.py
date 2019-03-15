@@ -23,7 +23,7 @@ class Subscription(models.Model):
     subscription_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    account_id = models.ForeignKey(
+    account = models.ForeignKey(
         Account, on_delete=models.CASCADE, related_name="subscriptions"
     )
     status = models.ForeignKey(
@@ -45,10 +45,10 @@ class Lesson(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     locked = models.BooleanField(default=False)
 
-    subscription_id = models.ForeignKey(
+    subscription = models.ForeignKey(
         Subscription, on_delete=models.SET_NULL, related_name="lessons", null=True
     )
-    student_id = models.ManyToManyField(Student)
+    students = models.ManyToManyField(Student)
 
     class Meta:
         verbose_name = "Lesson"

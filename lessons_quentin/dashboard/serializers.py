@@ -12,6 +12,10 @@ from account.serializers import StudentSerializer
 class SubSerializer(serializers.ModelSerializer):
     """Serializer used to create a new subscription, linked to an account"""
 
+    account_id = serializers.PrimaryKeyRelatedField(
+        source="account", queryset=Account.objects.all()
+    )
+
     class Meta:
 
         model = Subscription
@@ -20,6 +24,10 @@ class SubSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     """Serializing the informations of a lesson"""
+
+    subscription_id = serializers.PrimaryKeyRelatedField(
+        source="subscription", queryset=Subscription.objects.all()
+    )
 
     class Meta:
 
@@ -81,7 +89,7 @@ class EnrolStudent(serializers.ModelSerializer):
         if lesson.locked:
             return True
         new_student = self.validated_data["student_id"]
-        lesson.student_id.add(new_student)
+        lesson.students.add(new_student)
         lesson.save()
 
 
@@ -91,14 +99,14 @@ class LessonStudentSerializer(serializers.ModelSerializer):
     """
 
     # To get a nested display
-    student_id = StudentSerializer(many=True)
+    students = StudentSerializer(many=True)
     lesson_id = serializers.PrimaryKeyRelatedField(
         many=False, queryset=Lesson.objects.all()
     )
 
     class Meta:
         model = Lesson
-        fields = ("lesson_id", "date", "description", "student_id")
+        fields = ("lesson_id", "date", "description", "students")
 
 
 class LockedLessonSerializer(serializers.ModelSerializer):
