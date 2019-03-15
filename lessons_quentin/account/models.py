@@ -30,13 +30,13 @@ class Student(models.Model):
     insert_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    account_id = models.ForeignKey(
+    account = models.ForeignKey(
         Account, related_name="students", on_delete=models.CASCADE
     )
 
     class Meta:
         verbose_name = "Student"
-        unique_together = ("account_id", "first_name", "last_name")
+        unique_together = ("account", "first_name", "last_name")
 
     def __str__(self):
         return self.first_name + " " + self.last_name
