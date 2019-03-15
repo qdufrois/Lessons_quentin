@@ -35,16 +35,17 @@ python manage.py shell
 >>> Status.objects.create(name='Cancelled')
 >>> quit()
 ```
-
 * Then run the django server
 ```
 python manage.py runserver
 ```
+* While opening your brower, a homepage generated with DRF Docs should then be accessible at http://127.0.0.1:8000/ or http://localhost:8000/
 
+* NB: a permission system regulates the API, you have to create a (super)user, and log in, either in the admin or via the browsable API
 
 ## The Application
 
-This application displays an API that can be connected to a frontend application for instance. The aim is to interface data to create firm account, create subscriptions to lessons, add students to accounts... You can find below the list of the url and the expected JSON format for GET/POST requests.
+This application displays an API that can be connected to a frontend application for instance. The aim is to interface data to create firm account, create subscriptions to lessons, add students to accounts and lessons... You can find below the list of the url and the expected JSON format for GET/POST/PUT/PATCH/DELETE requests.
 
 ## JSON formats and URLs
 
@@ -78,6 +79,21 @@ data = {'name': '...',
 	'address': '...'}
 	
 ======================================================
+
+POST student
+https://localhost:8000/account/create_student
+data = {'account_id': ...,
+	'first_name': '...',
+	'last_name': '...',
+	'birthdate': '...',
+	'email': '...'}
+	
+======================================================
+
+DELETE student
+https://localhost:8000/account/delete_student/<id>
+
+=====================================================
 		
 POST subscription
 https://localhost:8000/dashboard/create_sub
@@ -101,7 +117,7 @@ data = {'subscription_id': ...,
 ======================================================
 		
 GET subscription + subscription.lessons
-https://localhost:8000/dashboard/subscription/<id>
+https://localhost:8000/dashboard/subscription_lessons/<id>
 result = {'subscritpion_id': '...',
 	'status': {
 		'status_id': ...,
@@ -122,21 +138,11 @@ result = {'subscritpion_id': '...',
 }
 
 ======================================================
-		
-POST student
-https://localhost:8000/account/create_student
-data = {'account_id': ...,
-	'first_name': '...',
-	'last_name': '...',
-	'birthdate': '...',
-	'email': '...'}
-		
-======================================================
-		
+
 POST student to lesson
 https://localhost:8000/dashboard/enrol_student
 data = {'student_id': ...,
-	'lesson_id': ...}
+	'lesson_id': ...}		
 		
 ======================================================
 		
@@ -159,6 +165,53 @@ result = {'lesson_id': ...,
 		...
 	]
 }
+
+======================================================
+
+PUT, PATCH lesson locked
+https://localhost:8000/dashboard/lock_lesson/<id>
+data = {'locked': ...}
+
+======================================================
+
+GET account + account.subscriptions
+http://localhost:8000/dashboard/subscriptions/<account_id>
+
+result = {'name' : '...',
+		  'email': '...',
+		  'subcriptions': [
+			  {'subscription_id': ...,
+			  'status': {'status_id': ...,
+			  			'name': '...'}
+			  },
+			  
+			  {'subscription_id': ...,
+			  'status': {'status_id': ...,
+			  			'name': '...'}
+			  },
+			  
+			  ...
+		 ]
+	}
+
+======================================================
+
+GET status
+http://localhost:8000/dashboard/all_status
+
+result = [
+	    {
+		"status_id": ...,
+		"name": ...
+	    },
+	    {
+		"status_id": ...,
+		"name": ...
+	    },
+	    
+	    ...
+	]
+
 ```
 
 
