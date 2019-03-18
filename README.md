@@ -45,7 +45,7 @@ python manage.py runserver
 
 ## The Application
 
-This application displays an API that can be connected to a frontend application for instance. The aim is to interface data to create firm account, create subscriptions to lessons, add students to accounts and lessons... You can find below the list of the url and the expected JSON format for GET/POST/PUT/PATCH/DELETE requests.
+This application displays an API that can be connected to a frontend application for instance. The application interfaces data for a website aiming to help firm to create and book lessons for its employees. Hence, you can create your firm account, create subscriptions to lessons, add students to accounts and lessons... You can find below the list of the url and the expected JSON format for GET/POST/PUT/PATCH/DELETE requests.
 
 ## JSON formats and URLs
 
