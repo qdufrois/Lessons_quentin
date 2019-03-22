@@ -22,7 +22,7 @@ class TestAccountViews(TestCase):
             email="test@test.com",
             password="Test123456",
         )
-        self.client.login(username="test1", password="Test123456")
+        self.client.force_login(self.user)
         # Creation of a test account
         Account.objects.create(
             account_id=1,

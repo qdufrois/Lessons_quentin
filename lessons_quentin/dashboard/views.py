@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -13,19 +14,19 @@ from dashboard.models import Subscription, Status, Lesson
 from dashboard.serializers import SubStatusSerializer, SubSerializer, EnrolStudent
 
 
-class UpdateStatusSubView(APIView):
+class UpdateStatusSubView(CreateAPIView):
     """This view allows to update the status field of a subscription, via a post 
     request containing the subcription and the status instances ids.
     """
 
     serializer_class = SubStatusSerializer
 
-    def post(self, request, format=None):
+    def create(self, request, *args, **kwargs):
         try:
             subscription = Subscription.objects.get(
                 subscription_id=request.data["subscription_id"]
             )
-            serializer = SubStatusSerializer(subscription, data=request.data)
+            serializer = self.get_serializer(subscription, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -35,16 +36,15 @@ class UpdateStatusSubView(APIView):
                 "This subscription does not exist", status=status.HTTP_404_NOT_FOUND
             )
 
-
-class EnrolStudentView(APIView):
+class EnrolStudentView(CreateAPIView):
     """This view allows to create a relationship between a student and a lesson instances,
     via a post request containing their ids.
     """
 
     serializer_class = EnrolStudent
 
-    def post(self, request, format=None):
-        serializer = EnrolStudent(data=request.data)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             # Checking if the lesson is not locked, and overriding the .save method
             # to create the relationship between the two instances
@@ -57,3 +57,4 @@ class EnrolStudentView(APIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
