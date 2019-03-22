@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import json
-from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
-from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
 from account.models import Student
-from dashboard.models import Subscription, Status, Lesson
-from dashboard.serializers import SubStatusSerializer, SubSerializer, EnrolStudent
+from dashboard.models import Subscription, Lesson
+from dashboard.serializers import SubStatusSerializer, EnrolStudent
 
 
 class UpdateStatusSubView(CreateAPIView):
@@ -20,6 +19,7 @@ class UpdateStatusSubView(CreateAPIView):
     """
 
     serializer_class = SubStatusSerializer
+    queryset = Subscription.objects.all()
 
     def create(self, request, *args, **kwargs):
         try:

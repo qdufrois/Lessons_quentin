@@ -22,7 +22,7 @@ class TestDashboardViews(TestCase):
             email="test@test.com",
             password="Test123456",
         )
-        self.client.login(username="test1", password="Test123456")
+        self.client.force_login(self.user)
         # Creation of a test account, test status, test subscription,
         # test student and test lesson instances
         Account.objects.create(
