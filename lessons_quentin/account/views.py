@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from account.models import Account, Student
+from account.models import Account
 from account.serializers import AccountSerializer
 
 
